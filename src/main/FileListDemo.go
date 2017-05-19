@@ -12,6 +12,8 @@ func main() {
 	//r := cal.Add(1,2)
 	//fmt.Println("r= ",r)
 	dogs = wtc.NewInit("d:/tmp/logs")
+	//readChan := dogs.GetSyncMain()
+	//fmt.Println(<- readChan)
 	dogs.ListError();
 
 }

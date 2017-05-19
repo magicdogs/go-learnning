@@ -5,6 +5,7 @@ import (
 	"os"
 	"fmt"
 	"io/ioutil"
+	"regexp"
 )
 
 type  Watchdog struct{
@@ -12,6 +13,8 @@ type  Watchdog struct{
 	errorList map[int]error
 	fileModTime map[string]time.Time
 	fileObjects map[string]os.FileInfo
+	syncMain chan string
+	timerJob <- chan time.Time
 }
 
 func NewInit(path string) (result Watchdog){
@@ -20,10 +23,17 @@ func NewInit(path string) (result Watchdog){
 	watcher.errorList = make(map[int]error)
 	watcher.fileModTime = make(map[string]time.Time)
 	watcher.fileObjects = make(map[string]os.FileInfo)
+	watcher.syncMain = make(chan string)
+	watcher.timerJob = time.Tick(10 * time.Second)
+	//watcher.timerJob <- time.Now()
+	fmt.Println("timeTick: ",(<- watcher.timerJob).Format("2006-01-02 15:04:05.999"))
 	watcher.List(path)
 	return watcher
 }
 
+func (p *Watchdog) GetSyncMain()(c chan string){
+	return p.syncMain
+}
 func (p *Watchdog) Release(){
 	p.errorList = nil
 	p.rootPath = ""
@@ -42,10 +52,13 @@ func (p *Watchdog)List(path string){
 			if(fso.IsDir()){
 				p.List(path + "/" + fso.Name())
 			}else{
-				fs := path + fso.Name()
-				fmt.Println(fs)
-				p.fileObjects[fs] = fso
-				p.fileModTime[fs] = fso.ModTime()
+				fs := path + "/" + fso.Name()
+				reg := regexp.MustCompile(`.+\.log$`)
+				if(reg.MatchString(fs)){
+					fmt.Println(fs)
+					p.fileObjects[fs] = fso
+					p.fileModTime[fs] = fso.ModTime()
+				}
 			}
 		}
 	}
