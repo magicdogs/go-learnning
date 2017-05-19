@@ -1,8 +1,6 @@
 package main
 
 import (
-	"fmt"
-	"pkg/cal"
 	"pkg/wtc"
 )
 
@@ -11,10 +9,11 @@ var (
 )
 
 func main() {
-	dogs = wtc.NewInit("d:")
+	//r := cal.Add(1,2)
+	//fmt.Println("r= ",r)
+	dogs = wtc.NewInit("d:/tmp/logs")
 	dogs.ListError();
-	r := cal.Add(1,2)
-	fmt.Println("r= ",r)
+
 }
 
 

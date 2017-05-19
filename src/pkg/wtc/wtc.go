@@ -11,7 +11,7 @@ type  Watchdog struct{
 	rootPath string
 	errorList map[int]error
 	fileModTime map[string]time.Time
-	fileObjects map[string]os.File
+	fileObjects map[string]os.FileInfo
 }
 
 func NewInit(path string) (result Watchdog){
@@ -19,7 +19,7 @@ func NewInit(path string) (result Watchdog){
 	watcher.rootPath = path
 	watcher.errorList = make(map[int]error)
 	watcher.fileModTime = make(map[string]time.Time)
-	watcher.fileObjects = make(map[string]os.File)
+	watcher.fileObjects = make(map[string]os.FileInfo)
 	watcher.List(path)
 	return watcher
 }
@@ -42,7 +42,10 @@ func (p *Watchdog)List(path string){
 			if(fso.IsDir()){
 				p.List(path + "/" + fso.Name())
 			}else{
-				fmt.Println(path + fso.Name())
+				fs := path + fso.Name()
+				fmt.Println(fs)
+				p.fileObjects[fs] = fso
+				p.fileModTime[fs] = fso.ModTime()
 			}
 		}
 	}
