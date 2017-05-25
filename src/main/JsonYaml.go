@@ -9,9 +9,9 @@ import (
 type Student struct {
 	Name    string
 	Age     int
-	Guake   bool
+	Guake   bool `true`
 	Classes []string
-	Price   float32
+	Price   float32 `16.5`
 }
 
 
