@@ -1,8 +1,8 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
+	"encoding/json"
 )
 
 
@@ -17,7 +17,28 @@ type Student struct {
 
 func main() {
 
-	st := &Student {
+
+	var a int = 1
+	var b *int = &a
+	var c **int = &b
+	var x int = *b
+	fmt.Println("a = ",a)
+	fmt.Println("&a = ",&a)
+	fmt.Println("*&a = ",*&a)
+	fmt.Println("b = ",b)
+	fmt.Println("&b = ",&b)
+	fmt.Println("*&b = ",*&b)
+	fmt.Println("*b = ",*b)
+	fmt.Println("c = ",c)
+	fmt.Println("*c = ",*c)
+	fmt.Println("&c = ",&c)
+	fmt.Println("*&c = ",*&c)
+	fmt.Println("**c = ",**c)
+	fmt.Println("***&*&*&*&c = ",***&*&*&*&*&c)
+	fmt.Println("x = ",x)
+
+
+	stx := &Student {
 		"Xiao Ming",
 		16,
 		true,
@@ -25,14 +46,21 @@ func main() {
 		9.99,
 	}
 
-	b,_ := json.Marshal(st)
 
-	js := string(b)
-	fmt.Println(js)
+	fmt.Println("=====================================")
+	fmt.Println(stx.Age)
+	fmt.Println(&stx.Age)
+	//fmt.Println(*stx)
+	fmt.Println("=====================================")
+
+	bx,_ := json.Marshal(stx)
+
+	js := string(bx)
+	//fmt.Println(js)
 
 	ft := &Student{}
 	json.Unmarshal([]byte(js),&ft)
-	fmt.Println(ft.Classes)
+	//fmt.Println(ft.Classes)
 
 
 }
